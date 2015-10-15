@@ -9,11 +9,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class UserOperations {
-
     // Database fields
     private DataBaseWrapper dbHelper;
     private String[] USER_TABLE_COLUMNS = { DataBaseWrapper.USER_ID, DataBaseWrapper.USER_NAME, DataBaseWrapper.USER_EMAIL };
-    private SQLiteDatabase database;
+    protected SQLiteDatabase database;
 
     public UserOperations(Context context) {
         dbHelper = new DataBaseWrapper(context);
@@ -28,7 +27,6 @@ public class UserOperations {
     }
 
     public User addUser(String name, String email) {
-
         ContentValues values = new ContentValues();
         values.put(DataBaseWrapper.USER_NAME, name);
         values.put(DataBaseWrapper.USER_EMAIL, email);
@@ -42,36 +40,34 @@ public class UserOperations {
 
         cursor.moveToFirst();
 
-        User newComment = parseUser(cursor);
+        User newUser = parseUser(cursor);
         cursor.close();
-        return newComment;
+
+        return newUser;
     }
 
-    public void deleteUser(User comment) {
-        long id = comment.getId();
-        System.out.println("Comment deleted with id: " + id);
+    public void deleteUser(User user) {
+        long id = user.getId();
+        System.out.println("User deleted with id: " + id);
         database.delete(DataBaseWrapper.USERS, DataBaseWrapper.USER_ID
                 + " = " + id, null);
     }
 
-    public List getAllUsers() {
+    public List<User> getAllUsers() {
         List users = new ArrayList();
 
         Cursor cursor = database.query(DataBaseWrapper.USERS,
                 USER_TABLE_COLUMNS, null, null, null, null, null);
 
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+        do {
             User user = parseUser(cursor);
             users.add(user);
-            cursor.moveToNext();
-        }
+        }  while (cursor.moveToNext());
 
         cursor.close();
         return users;
     }
-
-
 
     //Retrieves a single employee record with the given id
     public String getUserEmailById(long id) {
@@ -91,11 +87,12 @@ public class UserOperations {
 
     }
 
-
     private User parseUser(Cursor cursor) {
         User user = new User();
-        user.setId((cursor.getInt(0)));
-        user.setName(cursor.getString(1));
+        user.setId((cursor.getInt(cursor.getColumnIndex(DataBaseWrapper.USER_ID))));
+        user.setName(cursor.getString(cursor.getColumnIndex(DataBaseWrapper.USER_NAME)));
+        user.setEmail(cursor.getString(cursor.getColumnIndex(DataBaseWrapper.USER_EMAIL)));
+
         return user;
     }
 }

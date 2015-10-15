@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseWrapper extends SQLiteOpenHelper {
-
     public static final String USERS = "Users";
     public static final String USER_ID = "_id";
     public static final String USER_NAME = "_name";
