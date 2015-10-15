@@ -66,6 +66,14 @@ public class UserOperationsTest {
                 anyString(), anyString());
     }
 
+    @Test
+    public void testGetUserEmailById() {
+        when(mockDatabase.rawQuery(anyString(), any(String[].class))).thenReturn(userCursor);
+        userDBoperation.getUserEmailById(1);
+
+        Mockito.verify(mockDatabase).rawQuery(anyString(), any(String[].class));
+    }
+
     private Cursor getUserCursor() {
         MatrixCursor matrixCursor = new MatrixCursor(new String[]
                 { DataBaseWrapper.USER_ID, DataBaseWrapper.USER_NAME, DataBaseWrapper.USER_EMAIL });

@@ -71,7 +71,6 @@ public class UserOperations {
 
     //Retrieves a single employee record with the given id
     public String getUserEmailById(long id) {
-
         User regUser = null;
 
         String sql = "SELECT " + DataBaseWrapper.USER_EMAIL + " FROM " + DataBaseWrapper.USERS
