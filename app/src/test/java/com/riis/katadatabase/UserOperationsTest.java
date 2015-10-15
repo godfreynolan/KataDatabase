@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserOperationsTest {
-    private UserOperations userDBoperation;
+    private UserOperations userDBOperation;
     private SQLiteDatabase mockDatabase;
     private DataBaseWrapper mockDBHelper;
     private Cursor userCursor;
@@ -28,8 +28,8 @@ public class UserOperationsTest {
     public void setUp() {
         mockDatabase = Mockito.mock(SQLiteDatabase.class);
         mockDBHelper = Mockito.mock(DataBaseWrapper.class);
-        userDBoperation = new UserOperations(Mockito.mock(Context.class));
-        userDBoperation.database = mockDatabase;
+        userDBOperation = new UserOperations(Mockito.mock(Context.class));
+        userDBOperation.database = mockDatabase;
         userCursor = getUserCursor();
     }
 
@@ -41,7 +41,7 @@ public class UserOperationsTest {
                 any(String[].class), anyString(), any(String[].class), anyString(),
                 anyString(), anyString())).thenReturn(userCursor);
 
-        userDBoperation.addUser("godfrey", "godfrey@riis.com");
+        userDBOperation.addUser("godfrey", "godfrey@riis.com");
 
         Mockito.verify(mockDatabase).insert(Mockito.anyString(), Mockito.anyString(), (ContentValues) anyObject());
     }
@@ -49,7 +49,7 @@ public class UserOperationsTest {
     @Test
     public void testDeleteUser() {
         when(mockDatabase.delete(anyString(), anyString(), any(String[].class))).thenReturn(1);
-        userDBoperation.deleteUser(new User());
+        userDBOperation.deleteUser(new User());
 
         Mockito.verify(mockDatabase).delete(anyString(), anyString(), any(String[].class));
     }
@@ -60,7 +60,7 @@ public class UserOperationsTest {
                 any(String[].class), anyString(), any(String[].class), anyString(),
                 anyString(), anyString())).thenReturn(userCursor);
 
-        userDBoperation.getAllUsers();
+        userDBOperation.getAllUsers();
         Mockito.verify(mockDatabase).query(anyString(),
                 any(String[].class), anyString(), any(String[].class), anyString(),
                 anyString(), anyString());
@@ -69,7 +69,7 @@ public class UserOperationsTest {
     @Test
     public void testGetUserEmailById() {
         when(mockDatabase.rawQuery(anyString(), any(String[].class))).thenReturn(userCursor);
-        userDBoperation.getUserEmailById(1);
+        userDBOperation.getUserEmailById(1);
 
         Mockito.verify(mockDatabase).rawQuery(anyString(), any(String[].class));
     }

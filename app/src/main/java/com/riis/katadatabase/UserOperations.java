@@ -54,7 +54,7 @@ public class UserOperations {
     }
 
     public List<User> getAllUsers() {
-        List users = new ArrayList();
+        List<User> users = new ArrayList<>();
 
         Cursor cursor = database.query(DataBaseWrapper.USERS,
                 USER_TABLE_COLUMNS, null, null, null, null, null);
@@ -71,8 +71,6 @@ public class UserOperations {
 
     //Retrieves a single employee record with the given id
     public String getUserEmailById(long id) {
-        User regUser = null;
-
         String sql = "SELECT " + DataBaseWrapper.USER_EMAIL + " FROM " + DataBaseWrapper.USERS
                 + " WHERE " + DataBaseWrapper.USER_ID + " = ?";
 
@@ -83,7 +81,6 @@ public class UserOperations {
         } else {
             return "N/A";
         }
-
     }
 
     private User parseUser(Cursor cursor) {
